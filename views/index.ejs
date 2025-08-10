@@ -1,0 +1,119 @@
+<%- include("includes/header") %>
+<div id="homeApp">
+  <div class="container" id="features">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1 class="main-greeting">Welcome to, FileShare Web App</h1>
+      </div>
+    </div>
+    <div class="row h-15">
+      <div class="col-md-4">
+        <div class="card border border-dark rounded">
+          <a
+            class="card-header"
+            href="<%= request.mainURL%>/SingleFileShare"
+            style="text-decoration: none"
+          >
+            <img
+              v-bind:src="mainURL + '/public/img/instant-file-transfer.svg'"
+              style="width: 90%; height: 90%"
+            />
+          </a>
+          <div class="card-body border-dark border-top">
+            <h4>Instant File Transfer</h4>
+            <p>
+              Share small size file instantly without even login-ing and can
+              send the file via multiple platforms.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7 description1">
+        <p>
+          <kbd><---</kbd>
+          Make use of this feature of website to share the small files without
+          login-ing into the website and instantly share the file.
+        </p>
+        <p>
+          <kbd><---</kbd>
+          You can share the dropped file on multiple platforms such as Facebook,
+          Whatsapp, Twitter and Email.
+        </p>
+        <p>
+          <kbd><---</kbd>
+          Scan QR-Code to make transfer easier.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 text-center" style="margin-top: -30px">
+        <a v-bind:href="mainURL + '/MyUploads'" class="get-started"
+          >Get Started</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const homeApp = Vue.createApp({
+    data() {
+      return {
+        mainURL: baseUrl,
+      };
+    },
+  });
+  homeApp.mount("#homeApp");
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    // array with texts to type in typewriter
+    var dataText = [
+      "Welcome to, FileShare Web App",
+      "Secure",
+      "Scalable",
+      "Have a great experience!",
+    ];
+
+    // type one text in the typwriter
+    // keeps calling itself until the text is finished
+    function typeWriter(text, i, fnCallback) {
+      // chekc if text isn't finished yet
+      if (i < text.length) {
+        // add next character to h1
+        document.querySelector(".main-greeting").innerHTML =
+          text.substring(0, i + 1) +
+          '<span class="custom-cursor" aria-hidden="true"></span>';
+
+        // wait for a while and call this function again for next character
+        setTimeout(function () {
+          typeWriter(text, i + 1, fnCallback);
+        }, 100);
+      }
+      // text finished, call callback if there is a callback function
+      else if (typeof fnCallback == "function") {
+        // call callback after timeout
+        setTimeout(fnCallback, 700);
+      }
+    }
+    // start a typewriter animation for a text in the dataText array
+    function StartTextAnimation(i) {
+      if (typeof dataText[i] == "undefined") {
+        setTimeout(function () {
+          StartTextAnimation(0);
+        }, 20000);
+      }
+      // check if dataText[i] exists
+      if (i < dataText[i].length) {
+        // text exists! start typewriter animation
+        typeWriter(dataText[i], 0, function () {
+          // after callback (and whole text has been animated), start next text
+          StartTextAnimation(i + 1);
+        });
+      }
+    }
+    // start the text animation
+    StartTextAnimation(0);
+  });
+</script>
+<%- include("includes/footer") %>

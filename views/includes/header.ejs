@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= typeof title=="undefined" ?"Home":title %></title>
+    <link
+      rel="stylesheet"
+      href="<%= request.mainURL%>/public/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="<%= request.mainURL%>/public/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="<%= request.mainURL %>/public/css/style.css"
+    />
+    <script src="<%= request.mainURL %>/public/js/vue.global.js"></script>
+  </head>
+
+  <body>
+    <input type="hidden" id="base-url" value="<%= request.mainURL%>" />
+    <script>
+      var months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      const baseUrl = document.getElementById("base-url").value;
+    </script>
+    <% months=["January", "February" , "March" , "April" , "May" , "June" ,
+    "July" , "August" , "September" , "October" , "November" , "December" ];
+    formatBytes=function(bytes, decimals=2) { if (bytes===0) return '0 Bytes' ;
+    const k=1024; const dm=decimals < 0 ? 0 : decimals; const sizes=['Bytes',
+    'KB' , 'MB' , 'GB' , 'TB' , 'PB' , 'EB' , 'ZB' , 'YB' ]; const
+    i=Math.floor(Math.log(bytes) / Math.log(k)); return parseFloat((bytes /
+    Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]; }; getFolderSize=function
+    (arr) { var sum=0; for (var a=0; a < arr.length; a++) { if
+    (arr[a].type=="folder" ) { if (arr[a].files.length>0) { sum +=
+    getFolderSize(arr[a].files); } }else{ sum+=arr[a].size; } } return sum; } %>
+
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light"
+      style="color: white"
+    >
+      <a class="navbar-brand" href="<%= request.mainURL%>">
+        <img
+          src="<%= request.mainURL%>/public/img/fileshare-logo.png"
+          alt="FileShare logo"
+          class="logo"
+          style="width: 140px"
+      /></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarTogglerDemo03"
+        aria-controls="navbarTogglerDemo03"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        style="
+          background-color: white;
+          color: purple;
+          font-weight: bolder;
+          border: none;
+        "
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="<%= request.mainURL%>"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<%= request.mainURL%>/MyUploads"
+              >My Uploads</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<%= request.mainURL%>/SharedWithMe"
+              >Shared With Me</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<%= request.mainURL%>/MySharedLinks"
+              >My shared links</a
+            >
+          </li>
+          <% if (request.isLogin) { %>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <%= request.session.user.name %>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a
+                class="dropdown-item"
+                href="<%= request.mainURL %>/Logout"
+                style="color: #25274d; font-weight: 650"
+                >Log out</a
+              >
+            </div>
+          </li>
+          <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="<%= request.mainURL %>/Login">Login</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="<%= request.mainURL %>/Register"
+              >Register</a
+            >
+          </li>
+          <% } %>
+        </ul>
+        <!-- search field -->
+        <form
+          class="form-inline my-2 my-lg-0"
+          method="GET"
+          action="<%= request.mainURL %>/Search"
+        >
+          <input
+            class="form-control mr-sm-2 search-tf"
+            type="search"
+            placeholder="Search"
+            name="search"
+            value="<%= request.query.search %>"
+          />
+          <button
+            class="btn btn-outline-success my-2 my-sm-0 search-btn"
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
+      </div>
+    </nav>
+  </body>
+</html>
